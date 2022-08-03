@@ -1,0 +1,1 @@
+(isotovideo QEMU_NO_KVM=1 CASEDIR=. SCHEDULE=tests/wheels/launcher _EXIT_AFTER_SCHEDULE=1 ||:) 2>&1 | tee out && grep -q 'Early exit has been requested' out
