@@ -31,7 +31,7 @@ needle 'desktop-runner-border' will be required.
 
 =cut
 
-sub start_gui_program ($self, $program, $timeout, %args) {
+sub start_gui_program ($program, $timeout, %args) {
     send_key 'alt-f2';
     mouse_hide(1);
     assert_screen('desktop-runner', $timeout);
