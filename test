@@ -1,1 +1,11 @@
+if [[ $WITH_COVER_OPTIONS ]]; then
+    cover_deps=()
+    perl -MDevel::Cover -e1 &> /dev/null || cover_deps+=('perl(Devel::Cover)')
+    perl -MDevel::Cover::Report::Codecovbash -e1 &> /dev/null || cover_deps+=('perl(Devel::Cover::Report::Codecovbash)')
+    [[ $cover_deps ]] && zypper --non-interactive in "${cover_deps[@]}"
+    export PERL5OPT="-I$PWD/t/lib -MDevel::Cover=-db,$PWD/cover_db,-coverage,statement"
+fi
 (isotovideo QEMU_NO_KVM=1 CASEDIR=. SCHEDULE=tests/wheels/launcher _EXIT_AFTER_SCHEDULE=1 ||:) 2>&1 | tee out && grep -q 'Early exit has been requested' out
+if [[ $WITH_COVER_OPTIONS ]]; then
+    PERL5OPT= cover -report codecovbash "$PWD/cover_db"
+fi

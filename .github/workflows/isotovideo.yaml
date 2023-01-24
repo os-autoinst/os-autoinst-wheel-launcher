@@ -11,3 +11,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: Verify the test schedule including wheels
         run: ./test
+        env:
+          WITH_COVER_OPTIONS: 1
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          # should not be necessary for public repos, but might help avoid sporadic upload token errors
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./cover_db/codecov.json
+          fail_ci_if_error: true
+          verbose: true
