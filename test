@@ -1,11 +1,27 @@
+# install test-specific dependencies
+set -eo pipefail
+deps=()
+function require_perl_modules() {
+    for module in "$@"; do perl "-M$module" -e1 &> /dev/null || deps+=("perl($module)"); done
+}
 if [[ $WITH_COVER_OPTIONS ]]; then
-    cover_deps=()
-    perl -MDevel::Cover -e1 &> /dev/null || cover_deps+=('perl(Devel::Cover)')
-    perl -MDevel::Cover::Report::Codecovbash -e1 &> /dev/null || cover_deps+=('perl(Devel::Cover::Report::Codecovbash)')
-    [[ $cover_deps ]] && zypper --non-interactive in "${cover_deps[@]}"
+    require_perl_modules Devel::Cover Devel::Cover::Report::Codecovbash
+fi
+require_perl_modules Test::Most
+[[ $deps ]] && zypper --non-interactive in "${deps[@]}"
+
+# configure tracking statement coverage
+if [[ $WITH_COVER_OPTIONS ]]; then
     export PERL5OPT="-I$PWD/t/lib -MDevel::Cover=-db,$PWD/cover_db,-coverage,statement"
 fi
+
+# invoke unit tests
+prove -v
+
+# invoke integration tests
 (isotovideo QEMU_NO_KVM=1 CASEDIR=. SCHEDULE=tests/wheels/launcher _EXIT_AFTER_SCHEDULE=1 ||:) 2>&1 | tee out && grep -q 'Early exit has been requested' out
+
+# upload coverage report to codecov
 if [[ $WITH_COVER_OPTIONS ]]; then
     PERL5OPT= cover -report codecovbash "$PWD/cover_db"
 fi
