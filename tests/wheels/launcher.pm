@@ -1,6 +1,4 @@
 use Mojo::Base 'basetest';
-# use testapi;
-# use utils;
 use OpenQA::Wheel::Launcher 'start_gui_program';
 
 sub run {
