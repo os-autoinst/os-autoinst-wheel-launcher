@@ -17,10 +17,13 @@ It is meant to be added to your distribution's wheels.yaml.
 
 =head1 test API
 
+
+sub desktop_runner_hotkey () { check_var('DESKTOP', 'minimalx') ? 'ctrl-alt-spc' : 'alt-f2' }
+
 =head2 start_gui_program
 
-The given program will be launched via the command prompt
-of the desktop environment, assuming it's accessible via F2.
+The given program will be launched via the command prompt of the desktop
+environment with an environment-specific hotkey.
 
 The needle 'desktop-runner' must be matched.
 
@@ -32,7 +35,7 @@ needle 'desktop-runner-border' will be required.
 =cut
 
 sub start_gui_program ($program, $timeout = undef, %args) {
-    send_key 'alt-f2';
+    send_key(desktop_runner_hotkey());
     mouse_hide(1);
     assert_screen('desktop-runner', $timeout);
     type_string $program;
