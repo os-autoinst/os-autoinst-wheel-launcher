@@ -6,7 +6,7 @@ jobs:
   schedule:
     runs-on: ubuntu-20.04
     container:
-      image: "registry.opensuse.org/devel/openqa/containers-tw/isotovideo:qemu-x86"
+      image: "registry.opensuse.org/devel/openqa/containers/isotovideo:qemu-x86"
     steps:
       - uses: actions/checkout@v2
       - name: Verify the test schedule including wheels
