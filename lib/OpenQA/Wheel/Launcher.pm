@@ -15,10 +15,9 @@ It is meant to be added to your distribution's wheels.yaml.
 
 =cut
 
-=head1 test API
-
-
 sub desktop_runner_hotkey () { check_var('DESKTOP', 'minimalx') ? 'ctrl-alt-spc' : 'alt-f2' }
+
+=head1 test API
 
 =head2 start_gui_program
 
