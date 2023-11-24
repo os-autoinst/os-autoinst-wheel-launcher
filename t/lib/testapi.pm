@@ -3,7 +3,7 @@ use Exporter;
 use Mojo::Base 'Exporter', -signatures;
 
 # list names of test API functions our wheel is expected to call
-our @EXPORT = qw(send_key assert_screen check_screen save_screenshot type_string mouse_hide wait_screen_change);
+our @EXPORT = qw(send_key assert_screen check_var check_screen save_screenshot type_string mouse_hide wait_screen_change);
 
 # define helpers for tracking invoked test API functions
 my @INVOKED;

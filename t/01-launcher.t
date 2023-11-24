@@ -16,7 +16,8 @@ subtest 'run wheel as a whole' => sub {
 
     tests::wheels::launcher->new->run;
     is_deeply testapi::invoked_functions, [
-        [send_key => ('alt-f2')],
+        [check_var => ('DESKTOP', 'minimalx')],
+        [send_key => ('ctrl-alt-spc')],
         [mouse_hide => (1)],
         [assert_screen => ('desktop-runner', undef)],
         [type_string => ('firefox')],
@@ -32,7 +33,8 @@ subtest 'helper for starting GUI program with custom timeout, terminal and valid
 
     start_gui_program('foo', 42, valid => 1, terminal => 1);
     is_deeply testapi::invoked_functions, [
-       [send_key => ('alt-f2')],
+       [check_var => ('DESKTOP', 'minimalx')],
+       [send_key => ('ctrl-alt-spc')],
        [mouse_hide => (1)],
        [assert_screen => ('desktop-runner', 42)],  # timeout passed to assert_screen
        [type_string => ('foo')],  # program name typed
