@@ -1,7 +1,7 @@
 package OpenQA::Wheel::Launcher;
 use Mojo::Base 'Exporter', -signatures;
 
-use testapi qw(send_key assert_screen check_screen save_screenshot type_string mouse_hide wait_screen_change);
+use testapi qw(send_key assert_screen check_var check_screen save_screenshot type_string mouse_hide wait_screen_change);
 
 our @EXPORT_OK = qw(start_gui_program);
 
