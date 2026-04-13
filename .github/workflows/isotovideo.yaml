@@ -5,6 +5,8 @@ on: [push, pull_request]
 jobs:
   schedule:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: read
     container:
       image: "registry.opensuse.org/devel/openqa/containers-tw/isotovideo:qemu-x86"
     steps:
