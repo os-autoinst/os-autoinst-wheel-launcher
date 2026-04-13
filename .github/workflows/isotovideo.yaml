@@ -5,10 +5,12 @@ on: [push, pull_request]
 jobs:
   schedule:
     runs-on: ubuntu-20.04
+    permissions:
+      contents: read
     container:
       image: "registry.opensuse.org/devel/openqa/containers/isotovideo:qemu-x86"
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
       - name: Verify the test schedule including wheels
         run: ./test
         env:
