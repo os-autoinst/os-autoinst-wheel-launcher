@@ -1,5 +1,6 @@
 package OpenQA::Wheel::Launcher;
 use Mojo::Base 'Exporter', -signatures;
+use POSIX qw/ceil/;
 
 use testapi qw(send_key assert_screen check_var check_screen save_screenshot type_string mouse_hide wait_screen_change);
 
@@ -34,8 +35,13 @@ needle 'desktop-runner-border' will be required.
 =cut
 
 sub start_gui_program ($program, $timeout = undef, %args) {
-    send_key(desktop_runner_hotkey());
-    mouse_hide(1);
+    # make sure desktop runner is open
+    $timeout = ($timeout) ? ceil($timeout/4) : $timeout;
+    foreach my $i (1..3) {
+      send_key(desktop_runner_hotkey());
+      mouse_hide(1);
+      last if check_screen('desktop-runner', $timeout);
+    }
     assert_screen('desktop-runner', $timeout);
     type_string $program;
     if ($args{terminal}) {
