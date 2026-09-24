@@ -19,6 +19,7 @@ subtest 'run wheel as a whole' => sub {
         [check_var => ('DESKTOP', 'minimalx')],
         [send_key => ('ctrl-alt-spc')],
         [mouse_hide => (1)],
+        [check_screen => ('desktop-runner', undef)],
         [assert_screen => ('desktop-runner', undef)],
         [type_string => ('firefox')],
         [save_screenshot => ()],
@@ -28,7 +29,7 @@ subtest 'run wheel as a whole' => sub {
 
 subtest 'helper for starting GUI program with custom timeout, terminal and validation' => sub {
     my $check_screen_invocations = 0;
-    testapi::function_overrides->{check_screen} = sub (@) { ++$check_screen_invocations != 2 };
+    testapi::function_overrides->{check_screen} = sub (@) { ++$check_screen_invocations != 3 };
     testapi::clear_invoked_functions;
 
     start_gui_program('foo', 42, valid => 1, terminal => 1);
@@ -36,7 +37,8 @@ subtest 'helper for starting GUI program with custom timeout, terminal and valid
        [check_var => ('DESKTOP', 'minimalx')],
        [send_key => ('ctrl-alt-spc')],
        [mouse_hide => (1)],
-       [assert_screen => ('desktop-runner', 42)],  # timeout passed to assert_screen
+       [check_screen => ('desktop-runner', 11)],  # timeout passed to check_screen
+       [assert_screen => ('desktop-runner', 11)],  # timeout passed to assert_screen
        [type_string => ('foo')],  # program name typed
        [wait_screen_change => ()],  # due to terminal flag
        [send_key => ('alt-t')],  # via wait_screen_change callback
